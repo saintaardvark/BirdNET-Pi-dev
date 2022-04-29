@@ -1,0 +1,11 @@
+[Unit]
+Description=BirdNET Analysis Server
+Before=birdnet_analysis.service
+[Service]
+Restart=always
+Type=simple
+RestartSec=10
+User=${USER}
+ExecStart=/usr/local/bin/server.py
+[Install]
+WantedBy=multi-user.target

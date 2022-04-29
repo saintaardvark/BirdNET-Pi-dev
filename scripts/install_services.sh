@@ -38,73 +38,22 @@ install_scripts() {
 }
 
 install_birdnet_analysis() {
-  cat << EOF > $HOME/BirdNET-Pi/templates/birdnet_analysis.service
-[Unit]
-Description=BirdNET Analysis
-After=birdnet_server.service
-Requires=birdnet_server.service
-[Service]
-Restart=always
-Type=simple
-RestartSec=2
-User=${USER}
-ExecStart=/usr/local/bin/birdnet_analysis.sh
-[Install]
-WantedBy=multi-user.target
-EOF
-  ln -sf $HOME/BirdNET-Pi/templates/birdnet_analysis.service /usr/lib/systemd/system
+  ln -sf $HOME/BirdNET-Pi/systemd/birdnet_analysis.service /usr/lib/systemd/system
   systemctl enable birdnet_analysis.service
 }
 
 install_birdnet_server() {
-  cat << EOF > $HOME/BirdNET-Pi/templates/birdnet_server.service
-[Unit]
-Description=BirdNET Analysis Server
-Before=birdnet_analysis.service
-[Service]
-Restart=always
-Type=simple
-RestartSec=10
-User=${USER}
-ExecStart=/usr/local/bin/server.py
-[Install]
-WantedBy=multi-user.target
-EOF
-  ln -sf $HOME/BirdNET-Pi/templates/birdnet_server.service /usr/lib/systemd/system
+  ln -sf $HOME/BirdNET-Pi/systemd/birdnet_server.service /usr/lib/systemd/system
   systemctl enable birdnet_server.service
 }
 
 install_extraction_service() {
-  cat << EOF > $HOME/BirdNET-Pi/templates/extraction.service
-[Unit]
-Description=BirdNET BirdSound Extraction
-[Service]
-Restart=on-failure
-RestartSec=3
-Type=simple
-User=${USER}
-ExecStart=/usr/bin/env bash -c 'while true;do extract_new_birdsounds.sh;sleep 3;done'
-[Install]
-WantedBy=multi-user.target
-EOF
-  ln -sf $HOME/BirdNET-Pi/templates/extraction.service /usr/lib/systemd/system
+  ln -sf $HOME/BirdNET-Pi/systemd/extraction.service /usr/lib/systemd/system
   systemctl enable extraction.service
 }
 
 install_pushed_notifications() {
-  cat << EOF > $HOME/BirdNET-Pi/templates/pushed_notifications.service
-[Unit]
-Description=BirdNET-Pi Pushed.co Notifications
-[Service]
-Restart=on-success
-RestartSec=3
-Type=simple
-User=$USER
-ExecStart=/usr/local/bin/species_notifier.sh
-[Install]
-WantedBy=multi-user.target
-EOF
-  ln -sf $HOME/BirdNET-Pi/templates/pushed_notifications.service /usr/lib/systemd/system
+  ln -sf $HOME/BirdNET-Pi/systemd/pushed_notifications.service /usr/lib/systemd/system
 }
 
 create_necessary_dirs() {
@@ -160,39 +109,13 @@ EOF
 
 install_recording_service() {
   echo "Installing birdnet_recording.service"
-  cat << EOF > $HOME/BirdNET-Pi/templates/birdnet_recording.service
-[Unit]
-Description=BirdNET Recording
-[Service]
-Environment=XDG_RUNTIME_DIR=/run/user/1000
-Restart=always
-Type=simple
-RestartSec=3
-User=${USER}
-ExecStart=/usr/local/bin/birdnet_recording.sh
-[Install]
-WantedBy=multi-user.target
-EOF
-  ln -sf $HOME/BirdNET-Pi/templates/birdnet_recording.service /usr/lib/systemd/system
+  ln -sf $HOME/BirdNET-Pi/systemd/birdnet_recording.service /usr/lib/systemd/system
   systemctl enable birdnet_recording.service
 }
 
 install_custom_recording_service() {
   echo "Installing custom_recording.service"
-  cat << EOF > $HOME/BirdNET-Pi/templates/custom_recording.service
-[Unit]
-Description=BirdNET Custom Recording
-[Service]
-Environment=XDG_RUNTIME_DIR=/run/user/1000
-Restart=always
-Type=simple
-RestartSec=3
-User=${USER}
-ExecStart=/usr/local/bin/custom_recording.sh
-[Install]
-WantedBy=multi-user.target
-EOF
-  ln -sf $HOME/BirdNET-Pi/templates/custom_recording.service /usr/lib/systemd/system
+  ln -sf $HOME/BirdNET-Pi/systemd/custom_recording.service /usr/lib/systemd/system
 }
 
 install_Caddyfile() {
